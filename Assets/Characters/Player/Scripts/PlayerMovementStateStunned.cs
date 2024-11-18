@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovementStateStunned : State
 {
     private float stunnedTime;
     private PlayerMovementStateMachine stateMachine;
-    
+
     public void SetUp(PlayerMovementStateMachine stateMachine, float stunnedTime)
     {
         this.stunnedTime = stunnedTime;

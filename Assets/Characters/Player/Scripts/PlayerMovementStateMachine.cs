@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class PlayerMovementStateMachine : StateMachine
 {
+    [SerializeField] private Player player;
     [SerializeField] private PlayerMovementStateOnGround onGroundState;
     [SerializeField] private PlayerMovementStateInAir inAirState;
     [SerializeField] private PlayerMovementStateOnWall onWallState;
     [SerializeField] private PlayerMovementStateStunned StunnedState;
     [SerializeField] private PlayerStateDead deadState;
-    [SerializeField] private Rigidbody2D rigidbody;
-    [SerializeField] private CollisionCheck collisionCheck;
 
     public State OnGroundState { get { return onGroundState; } }
     public State InAirState { get { return inAirState; } }
@@ -20,11 +19,9 @@ public class PlayerMovementStateMachine : StateMachine
 
     private void Awake()
     {
-        originalGravityScale = rigidbody.gravityScale;
-
-        onGroundState.SetUp(this, rigidbody, collisionCheck);
-        inAirState.SetUp(this, rigidbody, collisionCheck);
-        onWallState.SetUp(this, rigidbody, collisionCheck);
+        onGroundState.SetUp(player);
+        inAirState.SetUp(player);
+        onWallState.SetUp(player);
     }
 
     public void StunForSec(float sec)

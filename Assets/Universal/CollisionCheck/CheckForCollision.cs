@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CheckForCollision : MonoBehaviour
 {
-    public bool isColliding {  get; private set; }
+    public bool isColliding { get; private set; }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

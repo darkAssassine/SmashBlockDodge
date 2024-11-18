@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAttackHitEnemy : MonoBehaviour
@@ -37,6 +34,6 @@ public class PlayerAttackHitEnemy : MonoBehaviour
 
     private void OnPlayerAttack()
     {
-        appliedKnockBack = false; 
+        appliedKnockBack = false;
     }
 }

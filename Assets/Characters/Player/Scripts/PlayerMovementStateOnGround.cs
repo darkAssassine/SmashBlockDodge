@@ -5,8 +5,8 @@ public class PlayerMovementStateOnGround : PlayerMovementState
 {
     [SerializeField] private float jumpStrenght;
 
-    public override void Enter() 
-    { 
+    public override void Enter()
+    {
         base.Enter();
     }
 
@@ -24,26 +24,26 @@ public class PlayerMovementStateOnGround : PlayerMovementState
     }
 
     public override void Exit()
-    { 
+    {
         base.Exit();
     }
 
     private void TryJump()
     {
-        if (collisionCheck.OnGround && Input.GetKeyDown(KeyCode.Space))
+        if (player.CollisionCheck.OnGround && player.Input.Jump)
         {
-            rigidbody.AddForce(Vector2.up * jumpStrenght, ForceMode2D.Impulse);
+            player.AddForce(Vector2.up * jumpStrenght, ForceMode2D.Impulse);
         }
     }
     private void CheckForTransition()
     {
-        if (collisionCheck.OnGround == false)
+        if (player.CollisionCheck.OnGround == false)
         {
-            stateMachine.ChangeState(stateMachine.InAirState);
+            player.movementStateMachine.ChangeState(player.movementStateMachine.InAirState);
         }
-        else if (collisionCheck.OnWall == true && collisionCheck.OnGround == false)
+        else if (player.CollisionCheck.OnWall == true && player.CollisionCheck.OnGround == false)
         {
-            stateMachine.ChangeState(stateMachine.OnWallState);
+            player.movementStateMachine.ChangeState(player.movementStateMachine.OnWallState);
         }
     }
 }

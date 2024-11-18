@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CollisionCheck : MonoBehaviour
@@ -9,12 +7,12 @@ public class CollisionCheck : MonoBehaviour
     [SerializeField] CheckForCollision up;
     [SerializeField] CheckForCollision down;
 
-    public bool OnGround 
+    public bool OnGround
     {
-        get 
+        get
         {
-            return down.isColliding ; 
-        } 
+            return down.isColliding;
+        }
     }
 
     public bool OnWall

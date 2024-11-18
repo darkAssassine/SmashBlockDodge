@@ -12,6 +12,7 @@ public class PlayerAttack : State
     [SerializeField] Transform ankerTrans;
     [SerializeField] Rigidbody2D rigidbody;
     [SerializeField] PlayerMovementStateMachine playerMovement;
+    [SerializeField] PlayerInput playerInput;
 
     private float currentCooldown;
     private bool isAlive = true;
@@ -28,7 +29,7 @@ public class PlayerAttack : State
 
     private void TryAttack()
     {
-        if (Input.GetKeyDown(KeyCode.J) && currentCooldown <= 0)
+        if (playerInput.Attack && currentCooldown <= 0)
         {
             AttackDir = GetAttackDirection();
             Rotate(ankerTrans, AttackDir);
@@ -40,14 +41,12 @@ public class PlayerAttack : State
 
     private Vector2 GetAttackDirection()
     {
-        Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        
+        Vector2 direction = playerInput.AttackDir;
         if (direction.magnitude < 0.1f)
         {
             direction.x = (int)playerMovement.CurrentDirection;
             direction.y = 0;
-        }  
-
+        }
         return direction.normalized;
     }
 
@@ -71,12 +70,12 @@ public class PlayerAttack : State
         playerMovement.StunForSec(stunTime);
     }
 
-    public void Die()
+    public void Disable()
     {
         isAlive = true;
     }
 
-    public void Revive()
+    public void Enable()
     {
         isAlive = true;
         currentCooldown = 0;

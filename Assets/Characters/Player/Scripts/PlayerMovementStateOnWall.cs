@@ -11,9 +11,9 @@ public class PlayerMovementStateOnWall : PlayerMovementState
     public override void Enter()
     {
         base.Enter();
-        if (rigidbody.velocity.y < 0)
+        if (player.Velocity.y < 0)
         {
-            rigidbody.velocity = Vector2.zero;
+            player.SetVelocity(Vector2.zero);
         }
     }
 
@@ -33,40 +33,40 @@ public class PlayerMovementStateOnWall : PlayerMovementState
     public override void Exit()
     {
         base.Exit();
-        rigidbody.gravityScale = stateMachine.originalGravityScale;
+        player.ResetGravityScale();
     }
 
     private void CheckForTransition()
     {
-        if (collisionCheck.OnGround == true)
+        if (player.CollisionCheck.OnGround == true)
         {
-            stateMachine.ChangeState(stateMachine.OnGroundState);
+            player.movementStateMachine.ChangeState(player.movementStateMachine.OnGroundState);
         }
-        else if (collisionCheck.OnWall == false)
+        else if (player.CollisionCheck.OnWall == false)
         {
-            stateMachine.ChangeState(stateMachine.InAirState);
+            player.movementStateMachine.ChangeState(player.movementStateMachine.InAirState);
         }
     }
 
     private void FallFasterThanJumping()
     {
-        if (rigidbody.velocity.y < 0)
+        if (player.Velocity.y < 0)
         {
-            rigidbody.gravityScale = fallGravityScale;
+            player.SetGravityScale(fallGravityScale);
         }
         else
         {
-            rigidbody.gravityScale = upGravityScale;
+            player.SetGravityScale(upGravityScale);
         }
     }
 
     private void TryToJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (player.Input.Jump)
         {
             int direction = 0;
 
-            if (collisionCheck.OnLeftWall == true)
+            if (player.CollisionCheck.OnLeftWall == true)
             {
                 direction = 1;
             }
@@ -75,8 +75,8 @@ public class PlayerMovementStateOnWall : PlayerMovementState
                 direction = -1;
             }
 
-            rigidbody.AddForce(new Vector2(backForce * direction, upForce), ForceMode2D.Impulse);
-            stateMachine.StunForSec(stunnedTimeAfterWallJump);
+            player.AddForce(new Vector2(backForce * direction, upForce), ForceMode2D.Impulse);
+            player.movementStateMachine.StunForSec(stunnedTimeAfterWallJump);
         }
     }
 }

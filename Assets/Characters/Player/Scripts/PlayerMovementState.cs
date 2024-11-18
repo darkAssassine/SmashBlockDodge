@@ -1,87 +1,55 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovementState : State
 {
+
     [SerializeField, Header("Movement")] protected float speed;
     [SerializeField] protected float acceleration;
     [SerializeField] protected float deceleration;
-    [SerializeField] protected float maxSpeed;
 
+    protected Player player;
 
-    public FacingDirection CurrentDirection { get; private set; } = FacingDirection.Right;
-
-    protected Rigidbody2D rigidbody;
-    protected CollisionCheck collisionCheck;
-    protected PlayerMovementStateMachine stateMachine;
-
-    public float Speed
+    public void SetUp(Player player)
     {
-        get
-        {
-            return speed;
-        }
-    }
-
-    public float ActualSpeed
-    {
-        get
-        {
-            return rigidbody.velocity.x;
-        }
-    }
-
-    public void SetUp(PlayerMovementStateMachine stateMachine, Rigidbody2D rigidbody, CollisionCheck collisionCheck)
-    {
-        this.rigidbody = rigidbody;
-        this.collisionCheck = collisionCheck;
-        this.stateMachine = stateMachine;
+        this.player = player;
     }
 
     public override void UpdatePhysics()
     {
-       Accelerate();
-       Deccelerate();
+        Accelerate();
+        Deccelerate();
         SetFacingDirection();
-        LimitSpeed();
     }
 
     private void Accelerate()
     {
-        if (Mathf.Abs(rigidbody.velocity.x) < speed)
+        if (Mathf.Abs(player.Velocity.x) < speed)
         {
-            rigidbody.AddForce(new Vector2(Input.GetAxisRaw("Horizontal") * Time.fixedDeltaTime * acceleration, 0), ForceMode2D.Impulse);
+            player.AddForce(new Vector2(player.Input.MovementAxis * Time.fixedDeltaTime * acceleration, 0), ForceMode2D.Impulse);
         }
     }
 
     private void Deccelerate()
     {
-        if (Input.GetAxisRaw("Horizontal") == 0 && Mathf.Abs(rigidbody.velocity.x) < 0.3f)
+        if (player.Input.MovementAxis == 0 && Mathf.Abs(player.Velocity.x) < 0.3f)
         {
-            rigidbody.velocity = new Vector2(0, rigidbody.velocity.y);
+            player.SetVelocity(new Vector2(0, player.Velocity.y));
         }
-        else if (rigidbody.velocity.x > 0 && Input.GetAxisRaw("Horizontal") != 1)
+        else if (player.Velocity.x > 0 && player.Input.MovementAxis != 1)
         {
-            rigidbody.AddForce(Vector2.left * deceleration * Time.fixedDeltaTime, ForceMode2D.Impulse);
+            player.AddForce(Vector2.left * deceleration);
         }
-        else if (rigidbody.velocity.x < 0 && Input.GetAxisRaw("Horizontal") != -1)
+        else if (player.Velocity.x < 0 && player.Input.MovementAxis != -1)
         {
-            rigidbody.AddForce(Vector2.right * deceleration * Time.fixedDeltaTime, ForceMode2D.Impulse);
+            player.AddForce(Vector2.right * deceleration);
         }
     }
 
     private void SetFacingDirection()
     {
-        if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1)
+        if (Mathf.Abs(player.Input.MovementAxis) == 1) ;
         {
-            stateMachine.CurrentDirection = (FacingDirection)Mathf.RoundToInt(Input.GetAxisRaw("Horizontal"));
+            player.SetFacingDirection((FacingDirection)Mathf.RoundToInt(player.Input.MovementAxis));
         }
-    }
-    private void LimitSpeed()
-    {
-        rigidbody.velocity = new Vector2(Mathf.Clamp(rigidbody.velocity.x, -maxSpeed, maxSpeed),
-                                         Mathf.Clamp(rigidbody.velocity.y, -maxSpeed, maxSpeed));
     }
 }

@@ -24,30 +24,30 @@ public class PlayerMovementStateInAir : PlayerMovementState
     public override void Exit()
     {
         base.Exit();
-        rigidbody.gravityScale = stateMachine.originalGravityScale;
+        player.ResetGravityScale();
     }
 
     private void CheckForTransition()
     {
-        if (collisionCheck.OnGround == true)
+        if (player.CollisionCheck.OnGround == true)
         {
-            stateMachine.ChangeState(stateMachine.OnGroundState);
+            player.movementStateMachine.ChangeState(player.movementStateMachine.OnGroundState);
         }
-        else if (collisionCheck.OnWall == true && collisionCheck.OnGround == false)
+        else if (player.CollisionCheck.OnWall == true && player.CollisionCheck.OnGround == false)
         {
-            stateMachine.ChangeState(stateMachine.OnWallState);
+            player.movementStateMachine.ChangeState(player.movementStateMachine.OnWallState);
         }
     }
 
     private void FallFasterThanJumping()
     {
-        if (rigidbody.velocity.y < -0.1f)
+        if (player.Velocity.y < -0.1f)
         {
-            rigidbody.gravityScale = fallSpeedMulti;
+            player.SetGravityScale(fallSpeedMulti);
         }
         else
         {
-            rigidbody.gravityScale = stateMachine.originalGravityScale;
+            player.ResetGravityScale();
         }
     }
 }
