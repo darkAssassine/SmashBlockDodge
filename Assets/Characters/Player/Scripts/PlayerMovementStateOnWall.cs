@@ -4,9 +4,8 @@ public class PlayerMovementStateOnWall : PlayerMovementState
 {
     [SerializeField] private float fallGravityScale;
     [SerializeField] private float upGravityScale;
-    [SerializeField] private float backForce;
-    [SerializeField] private float upForce;
     [SerializeField] private float stunnedTimeAfterWallJump;
+    [SerializeField] private Vector2 JumpForce;
 
     public override void Enter()
     {
@@ -75,7 +74,7 @@ public class PlayerMovementStateOnWall : PlayerMovementState
                 direction = -1;
             }
 
-            player.AddForce(new Vector2(backForce * direction, upForce), ForceMode2D.Impulse);
+            player.AddForce(new Vector2(JumpForce.x * direction, JumpForce.y), ForceMode2D.Impulse);
             player.movementStateMachine.StunForSec(stunnedTimeAfterWallJump);
         }
     }

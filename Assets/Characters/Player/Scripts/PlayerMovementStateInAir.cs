@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovementStateInAir : PlayerMovementState
 {
     [SerializeField] private float fallSpeedMulti;
+
+    private float currentCoyoteTime;
 
     public override void Enter()
     {

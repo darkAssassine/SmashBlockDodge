@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerMovementState : State
 {
@@ -47,9 +49,9 @@ public class PlayerMovementState : State
 
     private void SetFacingDirection()
     {
-        if (Mathf.Abs(player.Input.MovementAxis) == 1) ;
+        if (Mathf.Abs(player.Input.MovementAxis) != 0)
         {
-            player.SetFacingDirection((FacingDirection)Mathf.RoundToInt(player.Input.MovementAxis));
+            player.SetFacingDirection((FacingDirection)MathF.Round(player.Input.MovementAxis, MidpointRounding.AwayFromZero));
         }
     }
 }

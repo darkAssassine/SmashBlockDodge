@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Action PlayerDied;
+    public Action Died;
+    public Action<FacingDirection> ChangedDirection;
     public PlayerMovementStateMachine movementStateMachine;
 
     public CollisionCheck CollisionCheck
@@ -55,11 +56,15 @@ public class Player : MonoBehaviour
         defaultGravityScale = rigidbody.gravityScale;
     }
 
+    private void Start()
+    {
+        Debug.Log(Application.persistentDataPath + "/");
+    }
+
     public void Die()
     {
         movementStateMachine.Die();
         attack.Disable();
-        PlayerDied?.Invoke();
     }
 
     public void Revive()
@@ -81,6 +86,7 @@ public class Player : MonoBehaviour
     public void SetFacingDirection(FacingDirection direction)
     {
         this.direction = direction;
+        ChangedDirection.Invoke(direction);
     }
 
     public Vector2 GetFacingDirection()
